@@ -1,6 +1,7 @@
 const express = require('express');
 const connectDB = require('./config/connectDB');
 const router = require('./routes/routes');
+const morgan = require('morgan');
 require('dotenv').config();
 
 const app = express();
@@ -20,8 +21,14 @@ connectDB()
     process.exit(1);
 })
 
+// middleware to log incoming requests
+app.use(morgan('tiny'));
+
 // middleware to serve static content
 app.use(express.static('public'));
+
+// middleware to parse body json
+app.use(express.json());
 
 // Routes
 app.use(router);

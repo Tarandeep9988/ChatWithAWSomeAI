@@ -25,8 +25,8 @@ msgerForm.addEventListener("submit", async (event) => {
   appendMessage(PERSON_NAME, PERSON_IMG, "right", msgText);
   msgerInput.value = "";
 
-  const reponse = await getBotResponse();
-  appendMessage('BOT', BOT_IMG, "left", reponse.message);
+  const reponse = await getBotResponse(msgText);
+  appendMessage('BOT', BOT_IMG, "left", reponse.botMsg);
 });
 
 function appendMessage(name, img, side, text) {
@@ -50,9 +50,15 @@ function appendMessage(name, img, side, text) {
   msgerChat.scrollTop += 500;
 }
 
-async function getBotResponse() {
+async function getBotResponse(userMsg) {
     const url = "./response";
-    return fetch(url, { method: 'POST' })
+    return fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userMsg })
+    })
     .then((res) => { 
       return res.json();
     })
