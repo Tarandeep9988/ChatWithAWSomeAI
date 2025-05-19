@@ -11,12 +11,12 @@ const BOT_MSGS = [
 ];
 
 // Icons made by Freepik from www.flaticon.com
-const BOT_IMG = "https://image.flaticon.com/icons/svg/327/327779.svg";
-const PERSON_IMG = "https://image.flaticon.com/icons/svg/145/145867.svg";
+const BOT_IMG = "./images/bot.png";
+const PERSON_IMG = "./images/user.png";
 const BOT_NAME = "BOT";
 const PERSON_NAME = "Sajad";
 
-msgerForm.addEventListener("submit", event => {
+msgerForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const msgText = msgerInput.value;
@@ -25,7 +25,8 @@ msgerForm.addEventListener("submit", event => {
   appendMessage(PERSON_NAME, PERSON_IMG, "right", msgText);
   msgerInput.value = "";
 
-  botResponse();
+  const reponse = await getBotResponse();
+  appendMessage(BOT_IMG, BOT_IMG, "left", reponse.message);
 });
 
 function appendMessage(name, img, side, text) {
@@ -49,14 +50,15 @@ function appendMessage(name, img, side, text) {
   msgerChat.scrollTop += 500;
 }
 
-function botResponse() {
-  const r = random(0, BOT_MSGS.length - 1);
-  const msgText = BOT_MSGS[r];
-  const delay = msgText.split(" ").length * 100;
-
-  setTimeout(() => {
-    appendMessage(BOT_NAME, BOT_IMG, "left", msgText);
-  }, delay);
+async function getBotResponse() {
+    const url = "./response";
+    fetch(url, { method: 'POST' })
+    .then((res) => {
+      return res;
+    })
+    .catch((e) => {
+      return e;
+    })
 }
 
 // Utils

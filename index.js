@@ -1,26 +1,25 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
-import 'dotenv/config';
+const express = require('express');
+const connectDB = require('./config/connectDB');
+const router = require('./routes/routes');
+require('dotenv').config();
 
-import readline from "readline/promises";
-import { stdin, stdout } from 'process';
+const app = express();
 
-const genAI = new GoogleGenerativeAI(process.env.Gemini_API);
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-const rl = readline.createInterface({ input : stdin, output : stdout });
+// Function to connect to mongodb
+connectDB()
+.then(() => {
+    console.log("Starting Server");
+    const PORT = process.env.PORT;
+    app.listen(PORT, () => {
+        console.log(`Server is listening on http://localhost:${PORT}`);
+    })
+})
+.catch((e) => {
+    console.log("Closing Server");
+    process.exit(1);
+})
 
-const prompt = await rl.question('Enter your prompt: ');
-rl.close();
-
-console.log("Waiting for response");
-
-const interval = setInterval(() => {
-    process.stdout.write(".");
-}, 500);
-
-model.generateContent(prompt)
-.then((r) => {
-    clearInterval(interval);
-    console.log();
-    console.log(r.response.text());
-});
+// Routes
+app.use(express.static('public'));
+app.use(router);
