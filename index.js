@@ -20,6 +20,8 @@ connectDB()
     process.exit(1);
 })
 
-// Routes
+// middleware to serve static content
 app.use(express.static('public'));
+
+// Routes
 app.use(router);

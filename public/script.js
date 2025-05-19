@@ -26,7 +26,7 @@ msgerForm.addEventListener("submit", async (event) => {
   msgerInput.value = "";
 
   const reponse = await getBotResponse();
-  appendMessage(BOT_IMG, BOT_IMG, "left", reponse.message);
+  appendMessage('BOT', BOT_IMG, "left", reponse.message);
 });
 
 function appendMessage(name, img, side, text) {
@@ -52,8 +52,12 @@ function appendMessage(name, img, side, text) {
 
 async function getBotResponse() {
     const url = "./response";
-    fetch(url, { method: 'POST' })
+    return fetch(url, { method: 'POST' })
+    .then((res) => { 
+      return res.json();
+    })
     .then((res) => {
+      console.log(res);
       return res;
     })
     .catch((e) => {
