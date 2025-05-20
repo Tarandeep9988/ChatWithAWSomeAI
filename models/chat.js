@@ -4,7 +4,7 @@ const chatSchema = new mongoose.Schema({
     role: {
         type: String,
         required: true,
-        enum: ['user', 'ai'],
+        enum: ['user', 'model'],
     },
     message: {
         type: String,
